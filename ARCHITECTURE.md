@@ -1483,4 +1483,4 @@ When implementing a new command, consider:
 
 **Last Updated**: 2026-02-22
 **Architecture Version**: 2.2
-**rtk Version**: 0.23.0
+**rtk Version**: 0.24.0
