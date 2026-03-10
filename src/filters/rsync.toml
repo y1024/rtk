@@ -8,7 +8,7 @@ strip_lines_matching = [
   "^sent \\d",
 ]
 match_output = [
-  { pattern = "total size is", message = "ok (synced)" },
+  { pattern = "total size is", message = "ok (synced)", unless = "error|failed|No such file" },
 ]
 max_lines = 20
 
@@ -34,3 +34,15 @@ rsync error: error in file system (code 11) at receiver.c(741) [Receiver=3.2.7]
 """
 expected = """rsync: [Receiver] mkdir "/remote/path" failed: Permission denied (13)
 rsync error: error in file system (code 11) at receiver.c(741) [Receiver=3.2.7]"""
+
+[[tests.rsync]]
+name = "errors not swallowed when total size present"
+input = """
+rsync: [sender] error
+error in rsync protocol data stream (code 12)
+sent 100 bytes  received 200 bytes  60.00 bytes/sec
+total size is 1000  speedup is 3.33
+"""
+expected = """rsync: [sender] error
+error in rsync protocol data stream (code 12)
+total size is 1000  speedup is 3.33"""
